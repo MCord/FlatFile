@@ -4,7 +4,7 @@
     using FlatFile.Benchmark.Converters;
     using FlatFile.Benchmark.Entities;
 
-    public sealed class CsvHelperMappingForCustomObject : CsvClassMap<CustomObject>
+    public sealed class CsvHelperMappingForCustomObject : ClassMap<CustomObject>
     {
         public CsvHelperMappingForCustomObject()
         {

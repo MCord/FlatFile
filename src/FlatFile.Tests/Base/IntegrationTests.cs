@@ -58,7 +58,7 @@ namespace FlatFile.Tests.Base
             {
                 var objectsAfterRead = engine.Read<TestObject>(stream).ToList();
 
-                objectsAfterRead.ShouldAllBeEquivalentTo(Objects, options => options.IncludingAllDeclaredProperties());
+                objectsAfterRead.Should().AllBeEquivalentTo(Objects, options => options.IncludingAllDeclaredProperties());
 
             });
         }
@@ -70,7 +70,7 @@ namespace FlatFile.Tests.Base
             {
                 var objectsAfterRead = engine.Read<TestObject>(stream).ToList();
 
-                objectsAfterRead.ShouldAllBeEquivalentTo(Objects, options => options.IncludingAllDeclaredProperties());
+                objectsAfterRead.Should().AllBeEquivalentTo(Objects, options => options.IncludingAllDeclaredProperties());
 
             }, TestSource);
         }

@@ -142,7 +142,6 @@ namespace FlatFile.Benchmark
         public void BigDataWriteOperationShouldBeQuickWithReflectionMagic()
         {
             HyperTypeDescriptionProvider.Add(typeof (FixedSampleRecord));
-
             BigDataWriteOperationShouldBeQuick();
         }
 
