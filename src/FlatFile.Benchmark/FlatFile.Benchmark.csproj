@@ -12,12 +12,11 @@
     <ProjectReference Include="..\FlatFile.FixedLength\FlatFile.FixedLength.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Benchmark.It" Version="1.2.0" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.10.14" />
+    <PackageReference Include="Bogus" Version="22.2.1" />
     <PackageReference Include="CsvHelper" Version="7.1.1" />
-    <PackageReference Include="FakeO" Version="1.0.5302.23069" />
     <PackageReference Include="FileHelpers" Version="3.3.0" />
     <PackageReference Include="FluentAssertions" Version="5.4.1" />
-    <PackageReference Include="HyperDescriptor" Version="1.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
