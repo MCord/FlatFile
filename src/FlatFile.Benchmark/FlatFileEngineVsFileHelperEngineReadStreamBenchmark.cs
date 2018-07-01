@@ -1,43 +1,38 @@
 namespace FlatFile.Benchmark
 {
-    using System.Collections.Generic;
+    using System;
     using System.IO;
     using System.Linq;
+    using System.Text;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Attributes.Columns;
     using BenchmarkDotNet.Attributes.Exporters;
     using BenchmarkDotNet.Attributes.Jobs;
+    using BenchmarkDotNet.Engines;
     using BenchmarkDotNet.Running;
     using Entities;
     using FileHelpers;
     using FixedLength.Implementation;
-    using Generators;
+    using FluentAssertions;
     using Mapping;
     using Xunit;
 
-    [ClrJob(isBaseline: true), CoreJob, MonoJob]
-    [RPlotExporter, RankColumn]
-    public class FlatFileEngineVsFileHelperWriteBigData
+    [SimpleJob(RunStrategy.Monitoring, warmupCount: 1000, targetCount: 10000)]
+    public class FlatFileEngineVsFileHelperEngineReadStreamBenchmark
     {
-        private IEnumerable<FixedSampleRecord> sampleRecords;
-
-        [GlobalSetup]
-        public virtual void Setup()
-        {
-            var genarator = new FakeGenarator();
-            sampleRecords = Enumerable.Range(0, 100000).Select(genarator.Generate).ToArray();
-        }
         [Benchmark]
         public void FlatFileEngine()
         {
             var layout = new FixedSampleRecordLayout();
-            using (var stream = new MemoryStream())
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(FlatFileVsFileHelpersBenchmarkData.FixedFileSample)))
             {
                 var factory = new FixedLengthFileEngineFactory();
 
                 var flatFile = factory.GetEngine(layout);
 
-                flatFile.Write(stream, sampleRecords);
+                var records = flatFile.Read<FixedSampleRecord>(stream).ToArray();
+
+                records.Should().HaveCount(19);
             }
         }
 
@@ -45,14 +40,14 @@ namespace FlatFile.Benchmark
         private void FileHelperEngine()
         {
             var engine = new FileHelperEngine<FixedSampleRecord>();
-            using (var stream = new MemoryStream())
-            using (var streamWriter = new StreamWriter(stream))
+            using (var stream = new StringReader(FlatFileVsFileHelpersBenchmarkData.FixedFileSample))
             {
-                engine.WriteStream(streamWriter, sampleRecords);
+                var records = engine.ReadStream(stream);
+                records.Should().HaveCount(19);
             }
         }
 
-        [Fact(Skip = "Too long for CI")]
+        [Fact()]
         public void ReadOperationShouldBeQuick()
         {
             BenchmarkRunner.Run(GetType());

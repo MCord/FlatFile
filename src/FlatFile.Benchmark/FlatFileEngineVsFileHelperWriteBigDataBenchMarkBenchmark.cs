@@ -2,33 +2,30 @@ namespace FlatFile.Benchmark
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Attributes.Columns;
-    using BenchmarkDotNet.Attributes.Exporters;
     using BenchmarkDotNet.Attributes.Jobs;
+    using BenchmarkDotNet.Engines;
     using BenchmarkDotNet.Running;
     using Entities;
     using FileHelpers;
     using FixedLength.Implementation;
+    using Generators;
     using Mapping;
     using Xunit;
 
-    [ClrJob(isBaseline: true), CoreJob, MonoJob]
-    [RPlotExporter, RankColumn]
-    public class FlatFileEngineVsFileHelperWriteStream
+    [SimpleJob(RunStrategy.Monitoring, warmupCount: 1000, targetCount: 10000)]
+    public class FlatFileEngineVsFileHelperWriteBigDataBenchMark
     {
         private IEnumerable<FixedSampleRecord> sampleRecords;
 
         [GlobalSetup]
-        void Setup()
+        public virtual void Setup()
         {
-            var engine = new FileHelperEngine<FixedSampleRecord>();
-            using (var stream = new StringReader(FlatFileVsFileHelpersBenchmarkData.FixedFileSample))
-            {
-                var records = engine.ReadStream(stream);
-                sampleRecords = records;
-            }
+            var genarator = new FakeGenarator();
+            sampleRecords = Enumerable.Range(0, 100000).Select(genarator.Generate).ToArray();
         }
+
         [Benchmark]
         public void FlatFileEngine()
         {
@@ -54,10 +51,10 @@ namespace FlatFile.Benchmark
             }
         }
 
-        [Fact(Skip = "Too long for CI")]
+        [Fact]
         public void ReadOperationShouldBeQuick()
         {
-            BenchmarkRunner.Run<FlatFileEngineVsFileHelperWriteStream>();
+            BenchmarkRunner.Run(GetType());
         }
     }
 }

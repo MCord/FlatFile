@@ -4,9 +4,8 @@
     using System.Linq;
     using System.Text;
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Attributes.Columns;
-    using BenchmarkDotNet.Attributes.Exporters;
     using BenchmarkDotNet.Attributes.Jobs;
+    using BenchmarkDotNet.Engines;
     using BenchmarkDotNet.Running;
     using CsvHelper;
     using Delimited.Implementation;
@@ -14,8 +13,7 @@
     using Mapping;
     using Xunit;
 
-    [ClrJob(isBaseline: true), CoreJob, MonoJob]
-    [RPlotExporter, RankColumn]
+    [SimpleJob(RunStrategy.Monitoring, warmupCount: 1000, targetCount: 10000)]
     public class CsvWriterVsFlatFileEngineReadBenchmark
     {
         const string fileContent =
@@ -51,7 +49,7 @@ two,2,06776ed9-d33f-470f-bd3f-8db842356330,4|5|6
             }
         }
 
-        [Fact(Skip = "Too long for CI")]
+        [Fact()]
         public void ReadAllRecordsWithMapping()
         {
             BenchmarkRunner.Run<CsvWriterVsFlatFileEngineReadBenchmark>();

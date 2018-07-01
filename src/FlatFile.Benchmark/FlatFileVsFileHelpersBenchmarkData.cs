@@ -1,17 +1,5 @@
 namespace FlatFile.Benchmark
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using CsvHelper;
-    using Delimited.Implementation;
-    using FileHelpers;
-    using FlatFile.Benchmark.Entities;
-    using FlatFile.Benchmark.Generators;
-    using FlatFile.Benchmark.Mapping;
-    using FlatFile.FixedLength.Implementation;
-
     public class FlatFileVsFileHelpersBenchmarkData
     {
         public const string FixedFileSample =

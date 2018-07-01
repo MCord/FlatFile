@@ -4,9 +4,8 @@
     using System.Collections.Generic;
     using System.IO;
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Attributes.Columns;
-    using BenchmarkDotNet.Attributes.Exporters;
     using BenchmarkDotNet.Attributes.Jobs;
+    using BenchmarkDotNet.Engines;
     using BenchmarkDotNet.Running;
     using CsvHelper;
     using Delimited.Implementation;
@@ -14,8 +13,7 @@
     using Mapping;
     using Xunit;
 
-    [ClrJob(isBaseline: true), CoreJob, MonoJob]
-    [RPlotExporter, RankColumn]
+    [SimpleJob(RunStrategy.Monitoring, warmupCount: 1000, targetCount: 10000)]
     public class CsvWriterVsFlatFileEngineWriteBenchmark
     {
         private List<CustomObject> records;
@@ -34,8 +32,8 @@
                     {
                         First = 1,
                         Second = 2,
-                        Third = 3,
-                    },
+                        Third = 3
+                    }
                 },
                 new CustomObject
                 {
@@ -46,9 +44,9 @@
                     {
                         First = 4,
                         Second = 5,
-                        Third = 6,
-                    },
-                },
+                        Third = 6
+                    }
+                }
             };
         }
 
@@ -81,7 +79,7 @@
             }
         }
 
-        [Fact(Skip = "Too long for CI")]
+        [Fact]
         public void WriteAllRecordsWithMapping()
         {
             BenchmarkRunner.Run<CsvWriterVsFlatFileEngineWriteBenchmark>();
