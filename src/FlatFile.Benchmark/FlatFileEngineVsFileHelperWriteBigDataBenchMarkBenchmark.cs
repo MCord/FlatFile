@@ -6,13 +6,11 @@ namespace FlatFile.Benchmark
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Attributes.Jobs;
     using BenchmarkDotNet.Engines;
-    using BenchmarkDotNet.Running;
     using Entities;
     using FileHelpers;
     using FixedLength.Implementation;
     using Generators;
     using Mapping;
-    using Xunit;
 
     [SimpleJob(RunStrategy.Monitoring, warmupCount: 1000, targetCount: 10000)]
     public class FlatFileEngineVsFileHelperWriteBigDataBenchMark
@@ -49,12 +47,6 @@ namespace FlatFile.Benchmark
             {
                 engine.WriteStream(streamWriter, sampleRecords);
             }
-        }
-
-        [Fact]
-        public void ReadOperationShouldBeQuick()
-        {
-            BenchmarkRunner.Run(GetType());
         }
     }
 }

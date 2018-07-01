@@ -78,11 +78,5 @@
                 streamWriter.Flush();
             }
         }
-
-        [Fact]
-        public void WriteAllRecordsWithMapping()
-        {
-            BenchmarkRunner.Run<CsvWriterVsFlatFileEngineWriteBenchmark>();
-        }
     }
 }

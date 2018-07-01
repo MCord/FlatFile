@@ -21,7 +21,7 @@ namespace FlatFile.Benchmark
         private void Setup()
         {
             var engine = new FileHelperEngine<FixedSampleRecord>();
-            using (var stream = new StringReader(FlatFileVsFileHelpersBenchmarkData.FixedFileSample))
+            using (var stream = new StringReader(FlatFileBenchmarks.FixedFileSample))
             {
                 var records = engine.ReadStream(stream);
                 sampleRecords = records;
@@ -51,12 +51,6 @@ namespace FlatFile.Benchmark
             {
                 engine.WriteStream(streamWriter, sampleRecords);
             }
-        }
-
-        [Fact]
-        public void ReadOperationShouldBeQuick()
-        {
-            BenchmarkRunner.Run(GetType());
         }
     }
 }

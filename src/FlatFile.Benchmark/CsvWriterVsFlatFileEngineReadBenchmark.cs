@@ -6,7 +6,6 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Attributes.Jobs;
     using BenchmarkDotNet.Engines;
-    using BenchmarkDotNet.Running;
     using CsvHelper;
     using Delimited.Implementation;
     using Entities;
@@ -47,12 +46,6 @@ two,2,06776ed9-d33f-470f-bd3f-8db842356330,4|5|6
 
                 var objects = reader.GetRecords<CustomObject>().ToArray();
             }
-        }
-
-        [Fact()]
-        public void ReadAllRecordsWithMapping()
-        {
-            BenchmarkRunner.Run<CsvWriterVsFlatFileEngineReadBenchmark>();
         }
     }
 }

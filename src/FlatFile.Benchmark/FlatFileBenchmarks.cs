@@ -1,6 +1,9 @@
 namespace FlatFile.Benchmark
 {
-    public class FlatFileVsFileHelpersBenchmarkData
+    using BenchmarkDotNet.Running;
+    using Xunit;
+
+    public class FlatFileBenchmarks
     {
         public const string FixedFileSample =
             @"20000000109PANIAGUA JOSE                                                                                                                                                   0     
@@ -23,5 +26,15 @@ namespace FlatFile.Benchmark
 20000000885CHOQUE RAMON FELIX                                                                                                                                              0     
 20000000923AQUINO VILLASANTI NICASIO                                                                                                                                       0     
 ";
+        [Fact()]
+        public void ReadAllRecordsWithMapping()
+        {
+            BenchmarkRunner.Run<CsvWriterVsFlatFileEngineReadBenchmark>();
+            BenchmarkRunner.Run<CsvWriterVsFlatFileEngineWriteBenchmark>();
+            BenchmarkRunner.Run<FlatFileEngineVsFileHelperEngineReadStreamBenchmark>();
+            BenchmarkRunner.Run<FlatFileEngineVsFileHelperWriteBigDataBenchMark>();
+            BenchmarkRunner.Run<FlatFileEngineVsFileHelperWriteBigDataWithReflectionMagic>();
+            BenchmarkRunner.Run<FlatFileEngineVsFileHelperWriteStreamBenchmark>();
+        }
     }
 }
